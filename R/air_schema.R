@@ -52,11 +52,11 @@ get_table_schema <- function(base_id, table, token = NULL, refresh = FALSE) {
 #' Invalidate the schema cache for a base
 #'
 #' Called internally after write operations so subsequent reads re-fetch schema.
-#'
+#' This function assumes the `default_base_id` has been resolved by the function
+#' it lives in.
 #' @param base_id Base ID. If `NULL`, clears the entire cache.
 #' @noRd
 schema_cache_invalidate <- function(base_id = NULL) {
-  base_id <- resolve_base_id(base_id)
   if (is.null(base_id)) {
     rm(list = ls(.schema_cache), envir = .schema_cache)
   } else if (exists(base_id, envir = .schema_cache, inherits = FALSE)) {
