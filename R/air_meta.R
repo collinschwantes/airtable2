@@ -13,6 +13,7 @@
 #' }
 #' @export
 air_meta <- function(base_id, .token = NULL) {
+  base_id <- resolve_base_id(base_id)
   check_string(base_id)
 
   tables <- at_get_schema(base_id, token = .token)
@@ -55,6 +56,7 @@ air_meta <- function(base_id, .token = NULL) {
 #' @return Invisible `NULL`. Side effect: updates table and field metadata.
 #' @export
 air_meta_push <- function(base_id, meta, .token = NULL) {
+  base_id <- resolve_base_id(base_id)
   check_string(base_id)
 
   current <- air_meta(base_id, .token = .token)
@@ -159,6 +161,7 @@ air_meta_push <- function(base_id, meta, .token = NULL) {
 #' }
 #' @export
 air_meta_sync <- function(base_id, source = "_metadata", ..., .token = NULL) {
+  base_id <- resolve_base_id(base_id)
   check_string(base_id)
 
   meta <- .resolve_meta_source(source, base_id = base_id, .token = .token)
@@ -194,6 +197,7 @@ air_meta_sync <- function(base_id, source = "_metadata", ..., .token = NULL) {
 #' }
 #' @export
 air_meta_init <- function(base_id, meta_table = "_metadata", .token = NULL) {
+  base_id <- resolve_base_id(base_id)
   check_string(base_id)
   check_string(meta_table)
 
