@@ -1,6 +1,5 @@
 # airtable2 (development version)
 
-# airtable2 0.1.2.9000
 
 ## Breaking changes
 
