@@ -18,6 +18,7 @@
 #' @return List of table definitions (raw API format).
 #' @noRd
 get_base_schema <- function(base_id, token = NULL, refresh = FALSE) {
+  base_id <- resolve_base_id(base_id)
   if (!refresh && exists(base_id, envir = .schema_cache, inherits = FALSE)) {
     cached <- get(base_id, envir = .schema_cache, inherits = FALSE)
     if (identical(cached$provider, at_get_schema)) {
@@ -51,7 +52,8 @@ get_table_schema <- function(base_id, table, token = NULL, refresh = FALSE) {
 #' Invalidate the schema cache for a base
 #'
 #' Called internally after write operations so subsequent reads re-fetch schema.
-#'
+#' This function assumes the `default_base_id` has been resolved by the function
+#' it lives in.
 #' @param base_id Base ID. If `NULL`, clears the entire cache.
 #' @noRd
 schema_cache_invalidate <- function(base_id = NULL) {
@@ -82,6 +84,7 @@ schema_cache_invalidate <- function(base_id = NULL) {
 #' }
 #' @export
 air_schema <- function(base_id, .token = NULL) {
+  base_id <- resolve_base_id(base_id)
   check_string(base_id)
 
   tables <- at_get_schema(base_id, token = .token)
