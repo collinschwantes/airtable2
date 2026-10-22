@@ -34,6 +34,7 @@ air_dump <- function(
   attachments = c("file", "meta", "blob"),
   .token = NULL
 ) {
+  base_id <- resolve_base_id(base_id)
   check_string(base_id)
   format <- match.arg(format)
   attachments <- match.arg(attachments)

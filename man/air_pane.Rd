@@ -8,7 +8,7 @@ air_pane(base = NULL, bases = NULL, .token = NULL, include_views = FALSE)
 }
 \arguments{
 \item{base}{Character. A Base ID (starts with \code{app}) or a Base Name. If
-\code{NULL}, connects to all accessible bases.}
+\code{NULL}, connects to all accessible bases. Does not respect \code{\link[=air_set_base]{air_set_base()}}.}
 
 \item{bases}{Character vector of Base IDs or names. When supplied, the
 connection pane shows only those bases (as schemas). Cannot be combined

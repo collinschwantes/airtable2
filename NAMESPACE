@@ -108,17 +108,23 @@ exportMethods(dbWriteTable)
 importClassesFrom(DBI,DBIConnection)
 importClassesFrom(DBI,DBIDriver)
 importClassesFrom(DBI,DBIResult)
-importFrom(cli,cli_abort)
-importFrom(cli,cli_inform)
-importFrom(cli,cli_warn)
-importFrom(rlang,"%||%")
-importFrom(rlang,":=")
-importFrom(rlang,abort)
-importFrom(rlang,caller_env)
-importFrom(rlang,inform)
-importFrom(rlang,warn)
-importFrom(utils,read.csv)
-importFrom(utils,write.csv)
+importFrom(cli,
+  cli_abort,
+  cli_inform,
+  cli_warn
+)
+importFrom(rlang,
+  "%||%",
+  ":=",
+  abort,
+  caller_env,
+  inform,
+  warn
+)
+importFrom(utils,
+  read.csv,
+  write.csv
+)
 importMethodsFrom(DBI,dbClearResult)
 importMethodsFrom(DBI,dbConnect)
 importMethodsFrom(DBI,dbDataType)

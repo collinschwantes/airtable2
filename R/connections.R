@@ -7,7 +7,7 @@
 #' subset of bases.
 #'
 #' @param base Character. A Base ID (starts with `app`) or a Base Name. If
-#'   `NULL`, connects to all accessible bases.
+#'   `NULL`, connects to all accessible bases. Does not respect [air_set_base()].
 #' @param bases Character vector of Base IDs or names. When supplied, the
 #'   connection pane shows only those bases (as schemas). Cannot be combined
 #'   with `base`.
