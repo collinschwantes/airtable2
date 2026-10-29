@@ -520,7 +520,7 @@ records_to_tibble <- function(records, schema = NULL, na = NULL) {
       vapply(schema, function(f) f$type %||% "unknown", character(1)),
       vapply(schema, function(f) f$name, character(1))
     )
-    all_fields <- union(all_fields, names(type_lookup))
+    all_fields <- intersect(all_fields, names(type_lookup))
   }
 
   type_map <- airtable_type_map()
