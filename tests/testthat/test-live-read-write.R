@@ -52,6 +52,9 @@ test_that("air_read with fields parameter returns subset", {
   result <- air_read("Contacts", base_id, fields = c("Name", "Age"))
   expect_true("Name" %in% names(result))
   expect_true("Age" %in% names(result))
+  expect_false(any(c("Email", "Active", "Tags") %in% names(result)))
+  expect_type(result$Name, "character")
+  expect_type(result$Age, "double")
   expect_equal(nrow(result), 3L)
 })
 

@@ -55,9 +55,7 @@ at_list_records <- function(base_id,
 
   # Add query parameters
   if (!is.null(fields)) {
-    for (f in fields) {
-      req <- req |> httr2::req_url_query(`fields[]` = f, .multi = "explode")
-    }
+      req <- req |> httr2::req_url_query(`fields[]` = fields, .multi = "explode")
   }
   if (!is.null(formula)) {
     req <- req |> httr2::req_url_query(filterByFormula = formula)
@@ -336,7 +334,7 @@ at_delete_records <- function(base_id, table_id, record_ids, token = NULL,
 
     resp <- air_perform(req)
     results <- c(results, resp$records)
-    
+
     # Update progress bar
     if (!is.null(pb)) {
       cli::cli_progress_update(id = pb, set = i)
