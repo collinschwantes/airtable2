@@ -1,5 +1,10 @@
 # airtable2 (development version)
 
+
+## airtable2 0.1.2.9002
+* hotfix that adds default nulls to functions that should respect 
+`air_set_base()` allowing them to properly resolve the base id.
+
 # airtable2 0.1.2.9001
 ## New Features
 * Adds a descriptive metadata routine. This allows users to create durable descriptive metadata that can be exported from Airtable and over comes some limitations within airtable (e.g. cannot export base descriptions from the api, record history persists for a certain period of time). 
@@ -48,6 +53,14 @@
 
 * When `add_fields = "yes"` creates multiple new fields, a progress bar is
   shown instead of one message per field.
+
+* `air_read()` gains an `na` argument (similar to `readr::read_csv(na = ...)`)
+  that converts matching string values (e.g. the literal text `"NA"`) to a
+  real `NA` before type coercion (#19). Default `NULL` performs no
+  conversion, so existing behavior is unchanged unless opted into.
+  Functions that forward `...`/arguments to `air_read()` internally
+  (`air_left_join()`/`air_inner_join()`/`air_full_join()`, `dbReadTable()`,
+  `dbGetQuery()` on an Airtable DBI connection) support `na` as well.
 
 ## Bug fixes
 
