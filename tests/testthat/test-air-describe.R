@@ -50,7 +50,7 @@ test_that("air_describe_init() respects custom description_table name", {
 
   with_mocked_bindings(
     code = {
-      air_describe_init(base_id, desc_table = "Description",desc_dataframe = desc_dataframe, .token = "tok")
+      air_describe_init(desc_dataframe, base_id, desc_table = "Description", .token = "tok")
     },
     air_upsert      = function(data, table, merge_on, base_id, ...) {
       upsert_table <<- table
@@ -64,3 +64,41 @@ test_that("air_describe_init() respects custom description_table name", {
   expect_equal(upsert_table, "Description")
 })
 
+
+test_that("air_describe_init() uses the session default base_id", {
+  used_base <- NULL
+  desc_dataframe <- air_describe(title = "Mock Base")
+
+  withr::local_options(airtable2.base_id = "appSESSION0000001")
+  with_mocked_bindings(
+    code = air_describe_init(desc_dataframe, .token = "tok"),
+    air_upsert      = function(data, table, merge_on, base_id, ...) {
+      used_base <<- base_id
+      invisible(NULL)
+    },
+    at_get_schema   = function(...) list(),
+    at_create_table = function(...) invisible(NULL),
+    .package = "airtable2"
+  )
+
+  expect_equal(used_base, "appSESSION0000001")
+})
+
+test_that("air_describe_init() creates the table from desc_dataframe columns", {
+  created <- NULL
+  desc_dataframe <- air_describe(title = "Mock Base")
+
+  with_mocked_bindings(
+    code = air_describe_init(desc_dataframe, base_id, .token = "tok"),
+    air_upsert      = function(...) invisible(NULL),
+    at_get_schema   = function(...) list(),
+    at_create_table = function(name, fields, ...) {
+      created <<- list(name = name, fields = vapply(fields, `[[`, "", "name"))
+      invisible(NULL)
+    },
+    .package = "airtable2"
+  )
+
+  expect_equal(created$name, "_description")
+  expect_equal(created$fields, names(desc_dataframe))
+})

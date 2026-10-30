@@ -44,10 +44,10 @@
 #' air_describe(title = "My Awesome Base" ,
 #'  primary_contact= "Base Creator/Maintainer",
 #'  email = "email@@example.com",
-#'  base_description = "This base contains my awesome data
+#'  description = "This base contains my awesome data
 #'  from a project studying XXX in YYY. Data in the base were collected
 #'  from 1900-01-01 to 1990-01-01 by researchers at Some Long Term Project.",
-#'  is_part_of = "https://doi.org/10.48321/MyDMP01",
+#'  isPartOf = "https://doi.org/10.48321/MyDMP01",
 #'  isReferencedBy = "https://doi.org/10.5072/zenodo_sandbox.1062705"
 #'  )
 #'
@@ -85,20 +85,32 @@ air_describe <- function(title = NA_character_,
 #' descriptive metadata store, then edit the table in Airtable.
 #'
 #' @inheritParams air_read
+#' @param desc_dataframe Data.frame with descriptive metadata for the base, as
+#'   returned by [air_describe()].
 #' @param desc_table Name of the table to store metadata in.
 #'   Default `"_description"`.
-#' @param desc_dataframe Data.frame with descriptive metadata for the base.
 #' @return Invisible upsert result.
 #' @examples
 #' \dontrun{
 #' # Initialise the _description table
-#' air_describe_init("appXXXXXX")
+#' air_describe_init(air_describe(title = "My Base"), "appXXXXXX")
+#' # Or, with a session default base: air_set_base("appXXXXXX")
 #'
 #' # Use a custom table name
-#' air_describe_init("appXXXXXX", desc_table = "descriptive_metadata")
+#' air_describe_init(
+#'   air_describe(title = "My Base"),
+#'   "appXXXXXX",
+#'   desc_table = "descriptive_metadata"
+#' )
 #' }
 #' @export
-air_describe_init <- function(base_id, desc_table = "_description", desc_dataframe, .token = NULL) {
+air_describe_init <- function(
+  desc_dataframe,
+  base_id = NULL,
+  desc_table = "_description",
+  .token = NULL
+) {
+  base_id <- resolve_base_id(base_id)
   check_string(base_id)
   check_string(desc_table)
 
@@ -109,8 +121,13 @@ air_describe_init <- function(base_id, desc_table = "_description", desc_datafra
   table_exists <- any(vapply(existing, function(t) t$name == desc_table, logical(1)))
   if (!table_exists) {
     cli_inform("Creating {.val {desc_table}} table...")
-    tf <- function(nm) list(name = nm, type = "singleLineText")
-    # typed_list <-
+    tf <- function(nm) {
+      if (nm == "desc_key") {
+        list(name = nm, type = "number", options = list(precision = 0L))
+      } else {
+        list(name = nm, type = "singleLineText")
+      }
+    }
     at_create_table(
       name    = desc_table,
       fields  = lapply(names(desc_dataframe), tf),

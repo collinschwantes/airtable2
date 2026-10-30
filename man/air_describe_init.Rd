@@ -5,21 +5,22 @@
 \title{Seed the _description table from the output of air_describe}
 \usage{
 air_describe_init(
-  base_id,
-  desc_table = "_description",
   desc_dataframe,
+  base_id = NULL,
+  desc_table = "_description",
   .token = NULL
 )
 }
 \arguments{
+\item{desc_dataframe}{Data.frame with descriptive metadata for the base, as
+returned by \code{\link[=air_describe]{air_describe()}}.}
+
 \item{base_id}{Base ID (e.g., \code{"appXXXXXX"}). If \code{NULL}, uses the session
 default set by \code{\link[=air_set_base]{air_set_base()}} or the \code{AIRTABLE_BASE_ID} environment
 variable.}
 
 \item{desc_table}{Name of the table to store metadata in.
 Default \code{"_description"}.}
-
-\item{desc_dataframe}{Data.frame with descriptive metadata for the base.}
 
 \item{.token}{Personal access token (resolved via \code{\link[=air_token]{air_token()}} if \code{NULL}).}
 }
@@ -34,9 +35,14 @@ descriptive metadata store, then edit the table in Airtable.
 \examples{
 \dontrun{
 # Initialise the _description table
-air_describe_init("appXXXXXX")
+air_describe_init(air_describe(title = "My Base"), "appXXXXXX")
+# Or, with a session default base: air_set_base("appXXXXXX")
 
 # Use a custom table name
-air_describe_init("appXXXXXX", desc_table = "descriptive_metadata")
+air_describe_init(
+  air_describe(title = "My Base"),
+  "appXXXXXX",
+  desc_table = "descriptive_metadata"
+)
 }
 }

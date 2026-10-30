@@ -73,10 +73,10 @@ See  \href{https://www.dublincore.org/resources/userguide/creating_metadata/}{du
 air_describe(title = "My Awesome Base" ,
  primary_contact= "Base Creator/Maintainer",
  email = "email@example.com",
- base_description = "This base contains my awesome data
+ description = "This base contains my awesome data
  from a project studying XXX in YYY. Data in the base were collected
  from 1900-01-01 to 1990-01-01 by researchers at Some Long Term Project.",
- is_part_of = "https://doi.org/10.48321/MyDMP01",
+ isPartOf = "https://doi.org/10.48321/MyDMP01",
  isReferencedBy = "https://doi.org/10.5072/zenodo_sandbox.1062705"
  )
 
