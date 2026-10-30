@@ -2,12 +2,10 @@
 
 
 ## airtable2 0.1.2.9002
+* Adds `air_describe()` and `air_describe_init()`, a durable descriptive metadata routine. It stores base-level metadata (creator, contact, license, etc.) in a `_description` table, since the Airtable API cannot export base descriptions and record history is time-limited.
 * hotfix that adds default nulls to functions that should respect 
 `air_set_base()` allowing them to properly resolve the base id.
 
-# airtable2 0.1.2.9001
-## New Features
-* Adds a descriptive metadata routine. This allows users to create durable descriptive metadata that can be exported from Airtable and over comes some limitations within airtable (e.g. cannot export base descriptions from the api, record history persists for a certain period of time). 
 
 # airtable2 0.1.2.9001
 
