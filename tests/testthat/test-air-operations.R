@@ -60,3 +60,31 @@ test_that("air_delete handles empty input", {
     "No records to delete"
   )
 })
+
+test_that("air_read subsets the schema to the requested fields", {
+  schema_used <- NULL
+  fields_sent <- NULL
+  local_mocked_bindings(
+    get_table_schema = function(...) {
+      list(fields = list(
+        list(name = "Name", type = "singleLineText"),
+        list(name = "Age", type = "number"),
+        list(name = "Email", type = "email")
+      ))
+    },
+    at_list_records = function(..., fields) {
+      fields_sent <<- fields
+      list()
+    },
+    records_to_tibble = function(records, schema = NULL, na = NULL) {
+      schema_used <<- schema
+      tibble::tibble()
+    }
+  )
+  air_read("Contacts", "app123", fields = c("Name", "Age"), .token = "tok")
+  expect_equal(fields_sent, c("Name", "Age"))
+  expect_equal(vapply(schema_used, `[[`, "", "name"), c("Name", "Age"))
+
+  air_read("Contacts", "app123", .token = "tok")
+  expect_length(schema_used, 3L)
+})
