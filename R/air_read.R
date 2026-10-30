@@ -89,6 +89,12 @@ air_read <- function(
     }
   }
 
+  # subset the schema to just the fields in fields
+  if(!is.null(fields)){
+    schema_subset <- vapply(schema, function(f) f$name %in% fields, TRUE)
+    schema <- schema[schema_subset]
+  }
+
   # Fetch records
   records <- at_list_records(
     base_id = base_id,

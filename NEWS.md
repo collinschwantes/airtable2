@@ -1,6 +1,10 @@
 # airtable2 (development version)
 
 
+## airtable2 0.1.2.9003
+* build query so it can have multiple fields
+* subset tbl_schema to the values in fields
+
 ## airtable2 0.1.2.9002
 * Adds `air_describe()` and `air_describe_init()`, a durable descriptive metadata routine. It stores base-level metadata (creator, contact, license, etc.) in a `_description` table, since the Airtable API cannot export base descriptions and record history is time-limited.
 * hotfix that adds default nulls to functions that should respect 

@@ -25,3 +25,17 @@ test_that("at_update_records validates method", {
 test_that("at_delete_records validates inputs", {
   expect_error(at_delete_records(123, "Table", "rec1"), "must be a single non-NA string")
 })
+
+test_that("at_list_records sends every field as a fields[] query parameter", {
+  req <- NULL
+  local_mocked_bindings(
+    air_paginate = function(req_in, ...) {
+      req <<- req_in
+      list()
+    }
+  )
+  at_list_records("app123", "Table", fields = c("Name", "Age"), token = "tok")
+  url <- utils::URLdecode(req$url)
+  expect_match(url, "fields[]=Name", fixed = TRUE)
+  expect_match(url, "fields[]=Age", fixed = TRUE)
+})
